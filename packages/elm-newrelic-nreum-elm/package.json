@@ -1,0 +1,30 @@
+{
+  "name": "elm-newrelic-nreum.elm",
+  "version": "1.0.0",
+  "description": "ELM library to emit NewRelic Nreum Cmd msg",
+  "repository": "git@github.com:damjack/elm-ewrelic.git",
+  "author": "Damiano Giacomello <giacomello.damiano@gmail.com>",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "analyse": "elm-analyse  src/**/*",
+    "lint": "elm-review --compiler node_modules/.bin/elm",
+    "lint:fix": "elm-review --compiler node_modules/.bin/elm --fix-all",
+    "test": "elm-test",
+    "format": "elm-format src/**/* review tests --validate",
+    "docs": "elm make --docs docs.json",
+    "build": "exit 0"
+  },
+  "engines": {
+    "node": "16.15.0"
+  },
+  "devDependencies": {
+    "elm-analyse": "^0.16.5",
+    "elm-format": "^0.8.5",
+    "elm-json": "^0.2.12",
+    "elm-review": "^2.7.1",
+    "elm-test": "^0.19.1-revision7"
+  },
+  "dependencies": {
+    "elm": "^0.19.1-5"
+  }
+}
