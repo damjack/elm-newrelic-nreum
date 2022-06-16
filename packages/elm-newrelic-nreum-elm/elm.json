@@ -2,6 +2,8 @@
     "type": "package",
     "name": "damjack/elm-newrelic-nreum",
     "summary": "Opinionated library to use NewRelic NREUM with ELM",
+    "license": "BSD-3-Clause",
+    "version": "1.0.0",
     "exposed-modules": [
         "NewRelicNreum",
         "NewRelic.NREUM.CurrentRouteName",
@@ -10,11 +12,6 @@
         "NewRelic.NREUM.PageAction",
         "NewRelic.NREUM.Release",
         "NewRelic.NREUM.Tracking"
-    ],
-    "license": "BSD-3-Clause",
-    "version": "1.0.0",
-    "source-directories": [
-        "src"
     ],
     "elm-version": "0.19.1 <= v < 0.20.0",
     "dependencies": {
