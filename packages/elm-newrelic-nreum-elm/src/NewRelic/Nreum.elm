@@ -1,6 +1,7 @@
-module NewRelicNreum exposing
-    ( currentRouteName, interaction, noticeError, pageAction, release
+module NewRelic.Nreum exposing
+    ( interaction, noticeError
     , publish
+    , addPageAction, addRelease, routeName
     )
 
 {-| You can use browser agent and SPA API to monitor virtually anything that executes inside the browser.
@@ -26,24 +27,24 @@ SPA monitoring can help you:
 -}
 
 import Json.Encode as JE
-import NewRelic.NREUM.CurrentRouteName as CurrentRouteName
+import NewRelic.NREUM.AddPageAction as AddPageAction
+import NewRelic.NREUM.AddRelease as AddRelease
 import NewRelic.NREUM.Interaction as Interaction
 import NewRelic.NREUM.NoticeError as NoticeError
-import NewRelic.NREUM.PageAction as PageAction
-import NewRelic.NREUM.Release as Release
+import NewRelic.NREUM.RouteName as RouteName
 
 
 type NreumTracking
-    = CurrentRouteNameTracking CurrentRouteName.CurrentRouteName
+    = RouteNameTracking RouteName.RouteName
     | InteractionTracking Interaction.Interaction
     | NoticeErrorTracking NoticeError.NoticeError
-    | PageActionTracking PageAction.PageAction
-    | ReleaseTracking Release.Release
+    | AddPageActionTracking AddPageAction.AddPageAction
+    | AddReleaseTracking AddRelease.AddRelease
 
 
-currentRouteName : CurrentRouteName.CurrentRouteName -> NreumTracking
-currentRouteName config =
-    CurrentRouteNameTracking config
+routeName : RouteName.RouteName -> NreumTracking
+routeName config =
+    RouteNameTracking config
 
 
 interaction : Interaction.Interaction -> NreumTracking
@@ -56,22 +57,22 @@ noticeError config =
     NoticeErrorTracking config
 
 
-pageAction : PageAction.PageAction -> NreumTracking
-pageAction config =
-    PageActionTracking config
+addPageAction : AddPageAction.AddPageAction -> NreumTracking
+addPageAction config =
+    AddPageActionTracking config
 
 
-release : Release.Release -> NreumTracking
-release config =
-    ReleaseTracking config
+addRelease : AddRelease.AddRelease -> NreumTracking
+addRelease config =
+    AddReleaseTracking config
 
 
 publish : (JE.Value -> Cmd msg) -> NreumTracking -> Cmd msg
 publish mapperCmd tracking =
     case tracking of
-        CurrentRouteNameTracking config ->
+        RouteNameTracking config ->
             config
-                |> CurrentRouteName.encode
+                |> RouteName.encode
                 |> mapperCmd
 
         InteractionTracking config ->
@@ -84,12 +85,12 @@ publish mapperCmd tracking =
                 |> NoticeError.encode
                 |> mapperCmd
 
-        PageActionTracking config ->
+        AddPageActionTracking config ->
             config
-                |> PageAction.encode
+                |> AddPageAction.encode
                 |> mapperCmd
 
-        ReleaseTracking config ->
+        AddReleaseTracking config ->
             config
-                |> Release.encode
+                |> AddRelease.encode
                 |> mapperCmd

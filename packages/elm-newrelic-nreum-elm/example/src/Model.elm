@@ -51,7 +51,7 @@ updateModel model response =
                 |> NRNoticeError.init "error @requestResult"
                 |> NRNoticeError.withPageUrl "/home"
                 |> NRNreum.noticeError
-                |> NRNreum.publish TrackingPorts.trackNoticeError
+                |> NRNreum.publish TrackingPorts.nreumPort_
             )
 
         _ ->

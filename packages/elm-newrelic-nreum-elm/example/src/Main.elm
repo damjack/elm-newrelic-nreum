@@ -37,7 +37,7 @@ update msg model =
             , Cmd.batch
                 [ NRRelease.init "App Name" "V-0.0.1"
                     |> NRNreum.release
-                    |> NRNreum.publish TrackingPorts.trackRelease
+                    |> NRNreum.publish TrackingPorts.nreumPort_
                 , LoadQuery |> Task.succeed |> Task.perform identity
                 ]
             )
@@ -57,7 +57,7 @@ update msg model =
                 |> NRInteraction.withActionText "click"
                 |> NRInteraction.withSetAttribute "name" name
                 |> NRNreum.interaction
-                |> NRNreum.publish TrackingPorts.trackInteraction
+                |> NRNreum.publish TrackingPorts.nreumPort_
             )
 
 

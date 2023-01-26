@@ -1,7 +1,6 @@
 module NewRelic.NREUM.NoticeError exposing
     ( NoticeError
     , init
-    , withPageUrl
     , toGraphQLError, toGraphQLHttpError, toGraphQLResultError, toHttpError, toRemoteDataError
     , encode
     )
@@ -42,6 +41,7 @@ import Graphql.Http.GraphqlError as GraphqlError
 import Http
 import Json.Decode as JD
 import Json.Encode as JE
+import NewRelic.AdditionalData as AdditionalData
 import RemoteData exposing (RemoteData(..))
 
 
@@ -50,48 +50,44 @@ type NoticeError
 
 
 type alias NoticeErrorConfiguration =
-    { message : String
-    , error : String
-    , pageUrl : Maybe String
+    { prefix : String
+    , stackTrace : String
+    , additionalData : List AdditionalData.AdditionalData
     }
 
 
 {-| Build Nreum NoticeError with specific action name
 -}
 init : String -> String -> NoticeError
-init message error =
-    NoticeError (NoticeErrorConfiguration message error Nothing)
+init prefix stackTrace =
+    NoticeError (NoticeErrorConfiguration prefix stackTrace [])
 
 
-{-| Add specific URL to Nreum NoticeError
+{-| Add custom attribute to Nreum Interaction
 -}
-withPageUrl : String -> NoticeError -> NoticeError
-withPageUrl pageUrl (NoticeError noticeError) =
-    NoticeError { noticeError | pageUrl = Just pageUrl }
+addAdditionalData : AdditionalData.AdditionalData -> Interaction -> Interaction
+addAdditionalData additionalData (NoticeError noticeError) =
+    Interaction { noticeError | additionalData = additionalData :: noticeError.additionalData }
 
 
 {-| Convert Nreum NoticeError to JSON
 -}
 encode : NoticeError -> JE.Value
-encode (NoticeError config) =
+encode (NoticeError noticeError) =
     JE.object
-        ([ ( "message", JE.string config.message )
-         , ( "error", JE.string config.error )
-         ]
-            ++ appendMaybe config.pageUrl encodePageUrl
-        )
+        [ ( "errorPrefix", JE.string noticeError.prefix )
+        , ( "errorStackTrace", JE.string noticeError.stackTrace )
+        , ( "additionalData", encodeAdditionalData noticeError )
+        , ( "type_", JE.string "notice_error" )
+        ]
 
 
-encodePageUrl : String -> List ( String, JE.Value )
-encodePageUrl pageUrl =
-    [ ( "route", JE.string pageUrl ) ]
-
-
-appendMaybe : Maybe a -> (a -> List b) -> List b
-appendMaybe maybe mapper =
-    maybe
-        |> Maybe.map mapper
-        |> Maybe.withDefault []
+{-| Convert custom attributes of Nreum NoticeError to JSON
+-}
+encodeAdditionalData : AddPageActionConfiguration -> JE.Value
+encodeAdditionalData { additionalDataList } =
+    JE.object
+        (additionalDataList |> List.map (\data -> AdditionalData.encode data))
 
 
 toHttpError : Http.Error -> String
