@@ -1,4 +1,27 @@
-module NewRelic.AdditionalData exposing (AdditionalData, DataValue, encode, setBool, setFloat, setInt, setString)
+module NewRelic.AdditionalData exposing
+    ( AdditionalData, DataValue
+    , setBool, setFloat, setInt, setString
+    , encode
+    )
+
+{-|
+
+
+## Configuration
+
+@docs AdditionalData, DataValue
+
+
+## Configuration Methods
+
+@docs setBool, setFloat, setInt, setString
+
+
+## Encoding
+
+@docs encode
+
+-}
 
 import Json.Encode as JE
 
@@ -22,22 +45,22 @@ type DataValue
 
 setString : String -> String -> AdditionalData
 setString key value =
-    AdditionalDataString (AdditionalDataStringConfig key value)
+    AdditionalData (AdditionalDataConfig key (DataValueString value))
 
 
 setInt : String -> Int -> AdditionalData
 setInt key value =
-    AdditionalDataInt (AdditionalDataIntConfig key value)
+    AdditionalData (AdditionalDataConfig key (DataValueInt value))
 
 
 setBool : String -> Bool -> AdditionalData
 setBool key value =
-    AdditionalDataBool (AdditionalDataBoolConfig key value)
+    AdditionalData (AdditionalDataConfig key (DataValueBool value))
 
 
 setFloat : String -> Float -> AdditionalData
 setFloat key value =
-    AdditionalDataFloat (AdditionalDataFloatConfig key value)
+    AdditionalData (AdditionalDataConfig key (DataValueFloat value))
 
 
 encode : AdditionalData -> ( String, JE.Value )

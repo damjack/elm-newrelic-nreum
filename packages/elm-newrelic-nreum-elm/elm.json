@@ -5,13 +5,13 @@
     "license": "BSD-3-Clause",
     "version": "1.0.0",
     "exposed-modules": [
-        "NewRelicNreum",
-        "NewRelic.NREUM.CurrentRouteName",
+        "NewRelic.Nreum",
+        "NewRelic.AdditionalData",
+        "NewRelic.NREUM.AddPageAction",
+        "NewRelic.NREUM.AddRelease",
         "NewRelic.NREUM.Interaction",
         "NewRelic.NREUM.NoticeError",
-        "NewRelic.NREUM.PageAction",
-        "NewRelic.NREUM.Release",
-        "NewRelic.NREUM.Tracking"
+        "NewRelic.NREUM.RouteName"
     ],
     "elm-version": "0.19.1 <= v < 0.20.0",
     "dependencies": {

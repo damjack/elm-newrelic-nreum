@@ -1,6 +1,7 @@
 module NewRelic.NREUM.NoticeError exposing
     ( NoticeError
     , init
+    , addAdditionalData
     , toGraphQLError, toGraphQLHttpError, toGraphQLResultError, toHttpError, toRemoteDataError
     , encode
     )
@@ -22,7 +23,7 @@ This is useful when you have caught and handled an error, but you still want to 
 
 ## Overlay Configuration
 
-@docs withPageUrl
+@docs addAdditionalData
 
 
 ## Helpers

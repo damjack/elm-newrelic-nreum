@@ -8,7 +8,7 @@ import Html.Attributes as Attrs
 import Html.Events as Events
 import Model as M exposing (Flags, Model, Msg(..))
 import NewRelic.NREUM.Interaction as NRInteraction
-import NewRelicNreum as NRNreum
+import NewRelic.Nreum as NRNreum
 import NewRelic.NREUM.Release as NRRelease
 import Task
 import TrackingPorts

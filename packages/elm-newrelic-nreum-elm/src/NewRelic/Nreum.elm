@@ -1,7 +1,7 @@
 module NewRelic.Nreum exposing
-    ( interaction, noticeError
+    ( Nreum
+    , routeName, interaction, noticeError, addPageAction, addRelease
     , publish
-    , addPageAction, addRelease, routeName
     )
 
 {-| You can use browser agent and SPA API to monitor virtually anything that executes inside the browser.
@@ -15,14 +15,19 @@ SPA monitoring can help you:
   - Bring better apps to the marketplace more quickly
 
 
+## Definition types
+
+@docs Nreum
+
+
 ## Defining tracking
 
-@docs currentRouteName, interaction, noticeError, pageAction, release
+@docs routeName, interaction, noticeError, addPageAction, addRelease
 
 
 ## Publishing
 
-@docs publish, publishList
+@docs publish
 
 -}
 
@@ -34,63 +39,63 @@ import NewRelic.NREUM.NoticeError as NoticeError
 import NewRelic.NREUM.RouteName as RouteName
 
 
-type NreumTracking
-    = RouteNameTracking RouteName.RouteName
-    | InteractionTracking Interaction.Interaction
-    | NoticeErrorTracking NoticeError.NoticeError
-    | AddPageActionTracking AddPageAction.AddPageAction
-    | AddReleaseTracking AddRelease.AddRelease
+type Nreum
+    = RouteNameNreum RouteName.RouteName
+    | InteractionNreum Interaction.Interaction
+    | NoticeErrorNreum NoticeError.NoticeError
+    | AddPageActionNreum AddPageAction.AddPageAction
+    | AddReleaseNreum AddRelease.AddRelease
 
 
-routeName : RouteName.RouteName -> NreumTracking
+routeName : RouteName.RouteName -> Nreum
 routeName config =
-    RouteNameTracking config
+    RouteNameNreum config
 
 
-interaction : Interaction.Interaction -> NreumTracking
+interaction : Interaction.Interaction -> NreumNreum
 interaction config =
-    InteractionTracking config
+    InteractionNreum config
 
 
-noticeError : NoticeError.NoticeError -> NreumTracking
+noticeError : NoticeError.NoticeError -> NreumNreum
 noticeError config =
-    NoticeErrorTracking config
+    NoticeErrorNreum config
 
 
-addPageAction : AddPageAction.AddPageAction -> NreumTracking
+addPageAction : AddPageAction.AddPageAction -> NreumNreum
 addPageAction config =
-    AddPageActionTracking config
+    AddPageActionNreum config
 
 
-addRelease : AddRelease.AddRelease -> NreumTracking
+addRelease : AddRelease.AddRelease -> NreumNreum
 addRelease config =
-    AddReleaseTracking config
+    AddReleaseNreum config
 
 
-publish : (JE.Value -> Cmd msg) -> NreumTracking -> Cmd msg
+publish : (JE.Value -> Cmd msg) -> NreumNreum -> Cmd msg
 publish mapperCmd tracking =
     case tracking of
-        RouteNameTracking config ->
+        RouteNameNreum config ->
             config
                 |> RouteName.encode
                 |> mapperCmd
 
-        InteractionTracking config ->
+        InteractionNreum config ->
             config
                 |> Interaction.encode
                 |> mapperCmd
 
-        NoticeErrorTracking config ->
+        NoticeErrorNreum config ->
             config
                 |> NoticeError.encode
                 |> mapperCmd
 
-        AddPageActionTracking config ->
+        AddPageActionNreum config ->
             config
                 |> AddPageAction.encode
                 |> mapperCmd
 
-        AddReleaseTracking config ->
+        AddReleaseNreum config ->
             config
                 |> AddRelease.encode
                 |> mapperCmd

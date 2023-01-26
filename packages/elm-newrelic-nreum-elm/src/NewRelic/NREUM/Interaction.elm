@@ -1,9 +1,8 @@
 module NewRelic.NREUM.Interaction exposing
     ( Interaction
     , init
-    , addActionText
+    , addMessage, addAdditionalData
     , encode
-    , addSetAttribute
     )
 
 {-| Returns a new API object that is bound to the current SPA interaction.
@@ -23,7 +22,7 @@ Each time this method is called for the same BrowserInteraction, a new object is
 
 ## Overlay Configuration
 
-@docs addActionText, addSetAttributes
+@docs addMessage, addAdditionalData
 
 
 ## Encoding
