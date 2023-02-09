@@ -22,4 +22,5 @@ encodeTest : JE.Value
 encodeTest =
     JE.object
         [ ( "routeName", JE.string "route_name" )
+        , ( "type_", JE.string "route_name" )
         ]
