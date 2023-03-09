@@ -1,5 +1,5 @@
-module NewRelic.NREUM.Release exposing
-    ( Release
+module NewRelic.NREUM.AddRelease exposing
+    ( AddRelease
     , init
     , encode
     )
@@ -11,7 +11,7 @@ This is useful for sites where shared components are owned by different teams, o
 
 ## Configuration
 
-@docs Release
+@docs AddRelease
 
 
 ## Configuration Methods
@@ -28,24 +28,25 @@ This is useful for sites where shared components are owned by different teams, o
 import Json.Encode as JE
 
 
-type Release
-    = Release ReleaseConfiguration
+type AddRelease
+    = AddRelease AddReleaseConfiguration
 
 
-type alias ReleaseConfiguration =
+type alias AddReleaseConfiguration =
     { releaseName : String
-    , releaseId : String
+    , releaseVersion : String
     }
 
 
-init : String -> String -> Release
+init : String -> String -> AddRelease
 init releaseName releaseId =
-    Release (ReleaseConfiguration releaseName releaseId)
+    AddRelease (AddReleaseConfiguration releaseName releaseVersion)
 
 
-encode : Release -> JE.Value
-encode (Release config) =
+encode : AddRelease -> JE.Value
+encode (AddRelease config) =
     JE.object
-        [ ( "name", JE.string config.releaseName )
-        , ( "id", JE.string config.releaseId )
+        [ ( "releaseName", JE.string config.releaseName )
+        , ( "releaseVersion", JE.string config.releaseVersion )
+        , ( "type_", JE.string "release" )
         ]

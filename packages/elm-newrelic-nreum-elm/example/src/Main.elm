@@ -8,7 +8,7 @@ import Html.Attributes as Attrs
 import Html.Events as Events
 import Model as M exposing (Flags, Model, Msg(..))
 import NewRelic.NREUM.Interaction as NRInteraction
-import NewRelicNreum as NRNreum
+import NewRelic.Nreum as NRNreum
 import NewRelic.NREUM.Release as NRRelease
 import Task
 import TrackingPorts
@@ -37,7 +37,7 @@ update msg model =
             , Cmd.batch
                 [ NRRelease.init "App Name" "V-0.0.1"
                     |> NRNreum.release
-                    |> NRNreum.publish TrackingPorts.trackRelease
+                    |> NRNreum.publish TrackingPorts.nreumPort_
                 , LoadQuery |> Task.succeed |> Task.perform identity
                 ]
             )
@@ -57,7 +57,7 @@ update msg model =
                 |> NRInteraction.withActionText "click"
                 |> NRInteraction.withSetAttribute "name" name
                 |> NRNreum.interaction
-                |> NRNreum.publish TrackingPorts.trackInteraction
+                |> NRNreum.publish TrackingPorts.nreumPort_
             )
 
 

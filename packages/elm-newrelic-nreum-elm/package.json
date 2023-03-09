@@ -10,7 +10,7 @@
     "lint": "elm-review --compiler node_modules/.bin/elm",
     "lint:fix": "elm-review --compiler node_modules/.bin/elm --fix-all",
     "test": "elm-test",
-    "format": "elm-format src/**/* review tests --validate",
+    "format": "elm-format src/**/* review tests --yes",
     "docs": "elm make --docs docs.json",
     "build": "exit 0"
   },
@@ -20,8 +20,8 @@
   "devDependencies": {
     "elm-analyse": "^0.16.5",
     "elm-format": "^0.8.5",
-    "elm-json": "^0.2.12",
-    "elm-review": "^2.7.1",
+    "elm-json": "^0.2.13",
+    "elm-review": "^2.9.1",
     "elm-test": "^0.19.1-revision7"
   },
   "dependencies": {

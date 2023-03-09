@@ -9,14 +9,7 @@ let app = Elm.Main.init({
   },
 });
 
-app.ports.trackRelease.subscribe((payload) => {
-  console.log('trackRelease: ', payload);
+app.ports.nreumPort_.subscribe((payload) => {
+  console.log('NREUMLog: ', payload);
 });
 
-app.ports.trackInteraction.subscribe((payload) => {
-  console.log('trackInteraction: ', payload);
-});
-
-app.ports.trackNoticeError.subscribe((payload) => {
-  console.log('trackErrorNotice: ', payload);
-});

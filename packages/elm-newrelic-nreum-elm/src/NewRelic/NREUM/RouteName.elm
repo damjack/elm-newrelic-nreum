@@ -1,5 +1,5 @@
-module NewRelic.NREUM.CurrentRouteName exposing
-    ( CurrentRouteName
+module NewRelic.NREUM.RouteName exposing
+    ( RouteName
     , init
     , encode
     )
@@ -13,7 +13,7 @@ This method names the current route. This can be useful to:
 
 ## Configuration
 
-@docs CurrentRouteName
+@docs RouteName
 
 
 ## Configuration Methods
@@ -30,22 +30,23 @@ This method names the current route. This can be useful to:
 import Json.Encode as JE
 
 
-type CurrentRouteName
-    = CurrentRouteName CurrentRouteNameConfiguration
+type RouteName
+    = RouteName RouteNameConfiguration
 
 
-type alias CurrentRouteNameConfiguration =
+type alias RouteNameConfiguration =
     { routeName : String
     }
 
 
-init : String -> CurrentRouteName
+init : String -> RouteName
 init routeName =
-    CurrentRouteName (CurrentRouteNameConfiguration routeName)
+    RouteName (RouteNameConfiguration routeName)
 
 
-encode : CurrentRouteName -> JE.Value
-encode (CurrentRouteName config) =
+encode : RouteName -> JE.Value
+encode (RouteName config) =
     JE.object
-        [ ( "route", JE.string config.routeName )
+        [ ( "routeName", JE.string config.routeName )
+        , ( "type_", JE.string "route_name" )
         ]
