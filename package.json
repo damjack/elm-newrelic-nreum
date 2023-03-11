@@ -14,9 +14,6 @@
     "docs": "elm make --docs docs.json",
     "build": "exit 0"
   },
-  "engines": {
-    "node": "16.15.0"
-  },
   "devDependencies": {
     "elm-analyse": "^0.16.5",
     "elm-format": "^0.8.5",
