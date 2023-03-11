@@ -1,5 +1,5 @@
 {
-  "name": "elm-newrelic-nreum.elm",
+  "name": "elm-newrelic-nreum",
   "version": "1.0.0",
   "description": "ELM library to emit NewRelic Nreum Cmd msg",
   "repository": "git@github.com:damjack/elm-ewrelic.git",

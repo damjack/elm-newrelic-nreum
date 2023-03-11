@@ -1,6 +1,6 @@
 {
     "type": "package",
-    "name": "damjack/elm-newrelic-nreum.elm",
+    "name": "damjack/elm-newrelic-nreum",
     "summary": "Opinionated library to use NewRelic NREUM with ELM",
     "license": "BSD-3-Clause",
     "version": "1.0.0",
