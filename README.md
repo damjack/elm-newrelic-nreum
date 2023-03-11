@@ -9,14 +9,14 @@ This component is useful to create a list of Cmd msg to interact with Browser ag
 ### Installation
 Install the package in the normal way:
 ```bash
-elm install damjack/elm-newrelic
+elm install damjack/elm-newrelic-nreum
 ```
 
 ### Connect your JS to Elm
 You need to initialise the NewRelic NREUM windows object and expose correct ports.
 
 ```javascript
-import * as  newrelicElm from 'elm-newrelic';
+import * as  newrelicElm from 'elm-newrelic-nreum';
 
 const elmApp = Elm.Main.init({
   node: document.getElementById('root'),
@@ -60,7 +60,7 @@ And finally use that port to emitt `Cmd msg`:
 Instead of use multiple separate ports, you can pass always to one:
 
 ```javascript
-import * as  newrelicElm from 'elm-newrelic';
+import * as  newrelicElm from 'elm-newrelic-nreum';
 
 const elmApp = Elm.Main.init({
   node: document.getElementById('root'),
