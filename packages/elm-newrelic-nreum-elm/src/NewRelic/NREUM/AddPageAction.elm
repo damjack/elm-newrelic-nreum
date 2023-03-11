@@ -35,6 +35,8 @@ import Json.Encode as JE
 import NewRelic.AdditionalData as AdditionalData
 
 
+{-| AddPageAction type
+-}
 type AddPageAction
     = AddPageAction AddPageActionConfiguration
 
@@ -55,17 +57,17 @@ init name =
 {-| Add custom JSON data attributes to Nreum AddPageAction
 -}
 addAdditionalData : AdditionalData.AdditionalData -> AddPageAction -> AddPageAction
-addAdditionalData additionalData (AddPageAction pageAction) =
-    AddPageAction { pageAction | additionalData = additionalData :: pageAction.additionalData }
+addAdditionalData additionalData (AddPageAction config) =
+    AddPageAction { config | additionalData = additionalData :: config.additionalData }
 
 
 {-| Convert Nreum AddPageAction to JSON
 -}
 encode : AddPageAction -> JE.Value
-encode (AddPageAction pageAction) =
+encode (AddPageAction config) =
     JE.object
-        [ ( "actionName", JE.string pageAction.name )
-        , ( "additionalData", encodeAdditionalData pageAction )
+        [ ( "actionName", JE.string config.name )
+        , ( "additionalData", encodeAdditionalData config )
         , ( "type_", JE.string "page_action" )
         ]
 
@@ -73,6 +75,6 @@ encode (AddPageAction pageAction) =
 {-| Convert custom attributes of Nreum AddPageAction to JSON
 -}
 encodeAdditionalData : AddPageActionConfiguration -> JE.Value
-encodeAdditionalData { additionalDataList } =
+encodeAdditionalData { additionalData } =
     JE.object
-        (additionalDataList |> List.map (\data -> AdditionalData.encode data))
+        (additionalData |> List.map (\data -> AdditionalData.encode data))

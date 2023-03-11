@@ -30,23 +30,24 @@ This method names the current route. This can be useful to:
 import Json.Encode as JE
 
 
+{-| RouteName type
+-}
 type RouteName
-    = RouteName RouteNameConfiguration
+    = RouteName String
 
 
-type alias RouteNameConfiguration =
-    { routeName : String
-    }
-
-
+{-| Build Nreum RouteName with specific route page name
+-}
 init : String -> RouteName
 init routeName =
-    RouteName (RouteNameConfiguration routeName)
+    RouteName routeName
 
 
+{-| Convert Nreum RouteName to JSON
+-}
 encode : RouteName -> JE.Value
-encode (RouteName config) =
+encode (RouteName routeName) =
     JE.object
-        [ ( "routeName", JE.string config.routeName )
+        [ ( "routeName", JE.string routeName )
         , ( "type_", JE.string "route_name" )
         ]

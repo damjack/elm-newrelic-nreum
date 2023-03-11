@@ -39,6 +39,8 @@ import NewRelic.NREUM.NoticeError as NoticeError
 import NewRelic.NREUM.RouteName as RouteName
 
 
+{-| Nreum type
+-}
 type Nreum
     = RouteNameNreum RouteName.RouteName
     | InteractionNreum Interaction.Interaction
@@ -47,32 +49,81 @@ type Nreum
     | AddReleaseNreum AddRelease.AddRelease
 
 
+{-| Send to NewRelic the current custom route name
+
+Examples:
+
+    NewRelic.NREUM.RouteName.init "RouteName"
+        |> Nreum.routeName
+        |> Nreum.publish
+
+-}
 routeName : RouteName.RouteName -> Nreum
 routeName config =
     RouteNameNreum config
 
 
-interaction : Interaction.Interaction -> NreumNreum
+{-| Send to NewRelic a custom interaction with additional data filterable
+
+Examples:
+
+    NewRelic.NREUM.Interaction.init "Custom Interaction"
+        |> NewRelic.NREUM.Interaction.addMessage "Somenthing to send to add major information about intearction"
+        |> Nreum.interaction
+        |> Nreum.publish
+
+-}
+interaction : Interaction.Interaction -> Nreum
 interaction config =
     InteractionNreum config
 
 
-noticeError : NoticeError.NoticeError -> NreumNreum
+{-| Send to NewRelic a custom error message with additional data filterable
+
+Examples:
+
+    NewRelic.NREUM.NoticeError.toGraphQLResultError graphQLResultError
+        |> NewRelic.NREUM.NoticeError.init "error @requestResult"
+        |> Nreum.noticeError
+        |> Nreum.publish
+
+-}
+noticeError : NoticeError.NoticeError -> Nreum
 noticeError config =
     NoticeErrorNreum config
 
 
-addPageAction : AddPageAction.AddPageAction -> NreumNreum
+{-| Add global release version
+
+Examples:
+
+    NewRelic.NREUM.AddRelease.init "APP" "1.0.0"
+        |> Nreum.addRelease
+        |> Nreum.publish
+
+-}
+addPageAction : AddPageAction.AddPageAction -> Nreum
 addPageAction config =
     AddPageActionNreum config
 
 
-addRelease : AddRelease.AddRelease -> NreumNreum
+{-| Add global release version
+
+Examples:
+
+    NewRelic.NREUM.AddRelease.init "APP" "1.0.0"
+        |> Nreum.addRelease
+        |> Nreum.publish
+
+-}
+addRelease : AddRelease.AddRelease -> Nreum
 addRelease config =
     AddReleaseNreum config
 
 
-publish : (JE.Value -> Cmd msg) -> NreumNreum -> Cmd msg
+{-| Send a message to DataDog RUM
+-}
+publish : (JE.Value -> Cmd msg) -> Nreum -> Cmd msg
 publish mapperCmd tracking =
     case tracking of
         RouteNameNreum config ->
