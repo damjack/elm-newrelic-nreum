@@ -2,7 +2,7 @@ module NewRelic.NREUM.NoticeError exposing
     ( NoticeError
     , init
     , addAdditionalData
-    , toGraphQLError, toGraphQLHttpError, toGraphQLResultError, toHttpError, toRemoteDataError
+    , toGraphQLResultError, toHttpError, toRemoteDataError
     , encode
     )
 
@@ -28,7 +28,7 @@ This is useful when you have caught and handled an error, but you still want to 
 
 ## Helpers
 
-@docs toGraphQLError, toGraphQLHttpError, toGraphQLResultError, toHttpError, toRemoteDataError
+@docs toGraphQLResultError, toHttpError, toRemoteDataError
 
 
 ## Encoding
@@ -46,6 +46,8 @@ import NewRelic.AdditionalData as AdditionalData
 import RemoteData exposing (RemoteData(..))
 
 
+{-| NoticeError type
+-}
 type NoticeError
     = NoticeError NoticeErrorConfiguration
 
@@ -64,33 +66,35 @@ init prefix stackTrace =
     NoticeError (NoticeErrorConfiguration prefix stackTrace [])
 
 
-{-| Add custom attribute to Nreum Interaction
+{-| Add custom attribute to Nreum NoticeError
 -}
-addAdditionalData : AdditionalData.AdditionalData -> Interaction -> Interaction
-addAdditionalData additionalData (NoticeError noticeError) =
-    Interaction { noticeError | additionalData = additionalData :: noticeError.additionalData }
+addAdditionalData : AdditionalData.AdditionalData -> NoticeError -> NoticeError
+addAdditionalData additionalData (NoticeError config) =
+    NoticeError { config | additionalData = additionalData :: config.additionalData }
 
 
 {-| Convert Nreum NoticeError to JSON
 -}
 encode : NoticeError -> JE.Value
-encode (NoticeError noticeError) =
+encode (NoticeError config) =
     JE.object
-        [ ( "errorPrefix", JE.string noticeError.prefix )
-        , ( "errorStackTrace", JE.string noticeError.stackTrace )
-        , ( "additionalData", encodeAdditionalData noticeError )
+        [ ( "errorPrefix", JE.string config.prefix )
+        , ( "errorStackTrace", JE.string config.stackTrace )
+        , ( "additionalData", encodeAdditionalData config )
         , ( "type_", JE.string "notice_error" )
         ]
 
 
 {-| Convert custom attributes of Nreum NoticeError to JSON
 -}
-encodeAdditionalData : AddPageActionConfiguration -> JE.Value
-encodeAdditionalData { additionalDataList } =
+encodeAdditionalData : NoticeErrorConfiguration -> JE.Value
+encodeAdditionalData { additionalData } =
     JE.object
-        (additionalDataList |> List.map (\data -> AdditionalData.encode data))
+        (additionalData |> List.map (\data -> AdditionalData.encode data))
 
 
+{-| Convert Http.Error to String
+-}
 toHttpError : Http.Error -> String
 toHttpError err =
     case err of
@@ -110,6 +114,8 @@ toHttpError err =
             error
 
 
+{-| Convert Graphql.Http.Error result to String
+-}
 toGraphQLResultError : Graphql.Http.Error result -> String
 toGraphQLResultError error =
     case error of
@@ -120,11 +126,8 @@ toGraphQLResultError error =
             toGraphQLHttpError httpError
 
 
-toGraphQLError : GraphqlError.GraphqlError -> String
-toGraphQLError graphqlError =
-    graphqlError.message
-
-
+{-| Convert Graphql.Http.HttpError result to String
+-}
 toGraphQLHttpError : Graphql.Http.HttpError -> String
 toGraphQLHttpError httpError =
     case httpError of
@@ -144,6 +147,8 @@ toGraphQLHttpError httpError =
             JD.errorToString error
 
 
+{-| Convert RemoteData for Graphql to String
+-}
 toRemoteDataError : RemoteData (Graphql.Http.Error response) response -> String
 toRemoteDataError remoteData =
     case remoteData of
@@ -152,3 +157,12 @@ toRemoteDataError remoteData =
 
         _ ->
             ""
+
+
+
+-- INTERNAL --
+
+
+toGraphQLError : GraphqlError.GraphqlError -> String
+toGraphQLError graphqlError =
+    graphqlError.message

@@ -28,6 +28,8 @@ This is useful for sites where shared components are owned by different teams, o
 import Json.Encode as JE
 
 
+{-| AddRelease type
+-}
 type AddRelease
     = AddRelease AddReleaseConfiguration
 
@@ -38,11 +40,15 @@ type alias AddReleaseConfiguration =
     }
 
 
+{-| Build Nreum AddRelease with releaseName and realeaseVersion
+-}
 init : String -> String -> AddRelease
-init releaseName releaseId =
+init releaseName releaseVersion =
     AddRelease (AddReleaseConfiguration releaseName releaseVersion)
 
 
+{-| Convert Nreum AddRelease to JSON
+-}
 encode : AddRelease -> JE.Value
 encode (AddRelease config) =
     JE.object

@@ -26,6 +26,8 @@ module NewRelic.AdditionalData exposing
 import Json.Encode as JE
 
 
+{-| AdditionalData type
+-}
 type AdditionalData
     = AdditionalData AdditionalDataConfig
 
@@ -36,6 +38,8 @@ type alias AdditionalDataConfig =
     }
 
 
+{-| DataValue type
+-}
 type DataValue
     = DataValueString String
     | DataValueInt Int
@@ -43,26 +47,36 @@ type DataValue
     | DataValueFloat Float
 
 
+{-| Build additional data with String value
+-}
 setString : String -> String -> AdditionalData
 setString key value =
     AdditionalData (AdditionalDataConfig key (DataValueString value))
 
 
+{-| Build additional data with Int value
+-}
 setInt : String -> Int -> AdditionalData
 setInt key value =
     AdditionalData (AdditionalDataConfig key (DataValueInt value))
 
 
+{-| Build additional data with Bool value
+-}
 setBool : String -> Bool -> AdditionalData
 setBool key value =
     AdditionalData (AdditionalDataConfig key (DataValueBool value))
 
 
+{-| Build additional data with Float value
+-}
 setFloat : String -> Float -> AdditionalData
 setFloat key value =
     AdditionalData (AdditionalDataConfig key (DataValueFloat value))
 
 
+{-| Convert AdditionalData to JSON
+-}
 encode : AdditionalData -> ( String, JE.Value )
 encode (AdditionalData dataConfig) =
     case dataConfig.value of

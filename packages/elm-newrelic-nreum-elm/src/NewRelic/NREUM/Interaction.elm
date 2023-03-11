@@ -35,6 +35,8 @@ import Json.Encode as JE
 import NewRelic.AdditionalData as AdditionalData
 
 
+{-| Interaction type
+-}
 type Interaction
     = Interaction InteractionConfiguration
 
@@ -56,36 +58,36 @@ init interactionName =
 {-| Add custom attribute to Nreum Interaction
 -}
 addAdditionalData : AdditionalData.AdditionalData -> Interaction -> Interaction
-addAdditionalData additionalData (Interaction interaction) =
-    Interaction { interaction | additionalData = additionalData :: interaction.additionalData }
+addAdditionalData additionalData (Interaction config) =
+    Interaction { config | additionalData = additionalData :: config.additionalData }
 
 
 {-| Add sets the text value of the HTML element that was clicked to Nreum Interaction
 -}
 addMessage : String -> Interaction -> Interaction
-addMessage interactionMessage (Interaction interaction) =
-    Interaction { interaction | interactionMessage = Just interactionMessage }
+addMessage interactionMessage (Interaction config) =
+    Interaction { config | interactionMessage = Just interactionMessage }
 
 
 {-| Convert Nreum NoticeError to JSON
 -}
 encode : Interaction -> JE.Value
-encode (Interaction interaction) =
+encode (Interaction config) =
     JE.object
-        ([ ( "interactionName", JE.string interaction.interactionName )
-         , ( "additionalData", encodeAdditionalData interaction )
+        ([ ( "interactionName", JE.string config.interactionName )
+         , ( "additionalData", encodeAdditionalData config )
          , ( "type_", JE.string "interaction" )
          ]
-            ++ appendMaybe interaction.interactionMessage encodeMessage
+            ++ appendMaybe config.interactionMessage encodeMessage
         )
 
 
 {-| Convert custom attributes of Nreum Interaction to JSON
 -}
-encodeAdditionalData : AddPageActionConfiguration -> JE.Value
-encodeAdditionalData { additionalDataList } =
+encodeAdditionalData : InteractionConfiguration -> JE.Value
+encodeAdditionalData { additionalData } =
     JE.object
-        (additionalDataList |> List.map (\data -> AdditionalData.encode data))
+        (additionalData |> List.map (\data -> AdditionalData.encode data))
 
 
 encodeMessage : String -> List ( String, JE.Value )
